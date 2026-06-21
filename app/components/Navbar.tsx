@@ -18,8 +18,6 @@ const navLinks = [
   { label: "About", href: "/about" },
 ];
 
-const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.address)}`;
-
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const reduceMotion = useSafeReducedMotion();
@@ -52,16 +50,6 @@ export default function Navbar() {
           ))}
         </div>
 
-        <a
-          href={mapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hidden rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink transition-transform duration-300 ease-out hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper md:inline-block"
-        >
-          Get directions
-          <span className="sr-only"> (opens in a new tab)</span>
-        </a>
-
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -93,16 +81,6 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <a
-                href={mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setOpen(false)}
-                className="mt-3 rounded-full bg-accent px-5 py-3 text-center text-sm font-medium text-accent-ink transition-transform duration-300 ease-out hover:scale-[1.02]"
-              >
-                Get directions
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
             </div>
           </motion.div>
         )}
