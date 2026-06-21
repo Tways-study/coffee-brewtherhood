@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+:root {
+  --ink: oklch(0.22 0.06 255);
+  --ink-deep: oklch(0.15 0.05 255);
+  --paper: oklch(0.96 0.01 255);
+  --accent: oklch(0.62 0.23 0);
+  --accent-ink: oklch(0.16 0.05 255);
+  --muted: oklch(0.78 0.03 255);
+  --surface: oklch(0.27 0.06 255);
+
+  /* Semantic z-index scale */
+  --z-sticky: 40;
+  --z-skip-link: 50;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-deep: var(--ink-deep);
+  --color-paper: var(--paper);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --font-sans: var(--font-geist-sans);
+  --font-display: var(--font-bricolage);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  font-family: var(--font-geist-sans), sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-bricolage), sans-serif;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
