@@ -2,6 +2,8 @@
 
 import { motion } from "motion/react";
 import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
+import CoffeeRing from "@/app/components/decor/CoffeeRing";
+import Magnetic from "@/components/ui/magnetic";
 import { business } from "@/app/lib/content";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -13,7 +15,8 @@ export default function Visit() {
   const facts = [...business.serviceOptions, ...business.badges];
 
   return (
-    <section id="visit" className="scroll-mt-24 bg-ink-deep">
+    <section id="visit" className="relative isolate scroll-mt-24 overflow-hidden bg-ink-deep">
+      <CoffeeRing className="absolute bottom-6 left-4 -z-10 h-64 w-64 text-paper/[0.24]" />
       <div className="mx-auto max-w-6xl px-6 py-24 sm:px-10 sm:py-32">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
           <motion.div
@@ -32,7 +35,7 @@ export default function Visit() {
               {facts.map((fact) => (
                 <span
                   key={fact}
-                  className="rounded-full border border-paper/15 px-3.5 py-1.5 text-sm text-paper/80"
+                  className="rounded-full border border-paper/15 px-3.5 py-1.5 text-sm text-paper/80 transition-colors duration-300 hover:border-accent/40 hover:text-paper"
                 >
                   {fact}
                 </span>
@@ -41,18 +44,20 @@ export default function Visit() {
             </div>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a
-                href={mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full bg-accent px-7 py-3.5 text-center font-medium text-accent-ink transition-transform duration-300 ease-out hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
-              >
-                Get directions
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
+              <Magnetic className="inline-block">
+                <a
+                  href={mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block rounded-full bg-accent px-7 py-3.5 text-center font-medium text-accent-ink transition-transform duration-300 ease-out hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+                >
+                  Get directions
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </Magnetic>
               <a
                 href={`tel:${business.phone.replace(/\s/g, "")}`}
-                className="rounded-full border border-paper/30 px-7 py-3.5 text-center font-medium text-paper transition-colors duration-300 hover:bg-paper/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+                className="rounded-full border border-paper/30 px-7 py-3.5 text-center font-medium text-paper transition-all duration-300 ease-out hover:scale-[1.02] hover:bg-paper/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
               >
                 {business.phone}
               </a>

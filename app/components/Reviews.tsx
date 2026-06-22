@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 import { TestimonialsCarousel, type Testimonial } from "@/components/ui/testimonials-carousel";
+import CoffeeRing from "@/app/components/decor/CoffeeRing";
 import { business, reviewTags, reviews } from "@/app/lib/content";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -24,7 +25,8 @@ export default function Reviews() {
   const reduceMotion = useSafeReducedMotion();
 
   return (
-    <section id="reviews" className="scroll-mt-24 bg-ink">
+    <section id="reviews" className="relative isolate scroll-mt-24 overflow-hidden bg-ink">
+      <CoffeeRing className="absolute top-2 right-[6%] -z-10 h-72 w-72 text-paper/[0.24]" />
       <motion.div
         initial={{ y: reduceMotion ? 0 : 18 }}
         whileInView={{ y: 0 }}

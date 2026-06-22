@@ -24,7 +24,7 @@
   --color-muted: var(--muted);
   --color-surface: var(--surface);
   --font-sans: var(--font-geist-sans);
-  --font-display: var(--font-bricolage);
+  --font-display: var(--font-unbounded);
 }
 
 html {
@@ -52,7 +52,7 @@ body {
 h1,
 h2,
 h3 {
-  font-family: var(--font-bricolage), sans-serif;
+  font-family: var(--font-unbounded), sans-serif;
   text-wrap: balance;
 }
 
@@ -113,4 +113,49 @@ p {
 .spotlight-card:hover::before,
 .spotlight-card:focus-within::before {
   opacity: 1;
+}
+
+/* Slow breathing motion for the coffee-ring background motif: a faint, almost
+   imperceptible scale/opacity pulse, never a spin (rings don't spin, they settle). */
+@keyframes ring-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.035);
+  }
+}
+
+.coffee-ring {
+  animation: ring-breathe 12s ease-in-out infinite;
+}
+
+/* Rising steam curl, looped: each wisp drifts up and fades, then resets. */
+@keyframes steam-rise {
+  0% {
+    transform: translateY(0) scaleY(1);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.55;
+  }
+  85% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(-22px) scaleY(1.08);
+    opacity: 0;
+  }
+}
+
+.steam-wisp {
+  transform-origin: bottom center;
+  animation: steam-rise 5s ease-in-out infinite;
+}
+
+.steam-wisp-2 {
+  animation-delay: 1.6s;
 }

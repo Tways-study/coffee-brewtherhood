@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Bricolage_Grotesque } from "next/font/google";
+import { Geist, Unbounded } from "next/font/google";
 import Navbar from "@/app/components/Navbar";
 import "./globals.css";
 
@@ -8,8 +8,9 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+const unbounded = Unbounded({
+  variable: "--font-unbounded",
+  weight: "variable",
   subsets: ["latin"],
 });
 
@@ -27,7 +28,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${bricolage.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${unbounded.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-ink text-paper">
         <a

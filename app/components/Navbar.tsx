@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,6 +23,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const reduceMotion = useSafeReducedMotion();
   const pathname = usePathname();
   const { scrollY } = useScroll();
@@ -30,6 +31,27 @@ export default function Navbar() {
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 40);
   });
+
+  // Tracks which in-page section is currently in view, so the nav can show
+  // where you actually are on the page, not just which link you last clicked.
+  useEffect(() => {
+    if (pathname !== "/") return;
+    const sectionIds = ["menu", "reviews", "visit"];
+    const elements = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting);
+        if (visible.length > 0) setActiveSection(visible[0].target.id);
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+    );
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [pathname]);
 
   return (
     <motion.header
@@ -61,7 +83,10 @@ export default function Navbar() {
           onMouseLeave={() => setHovered(null)}
         >
           {navLinks.map((link) => {
-            const isActive = link.href === "/about" && pathname === "/about";
+            const isActive =
+              link.href === "/about"
+                ? pathname === "/about"
+                : pathname === "/" && activeSection === link.href.replace("/#", "");
             return (
               <Link
                 key={link.label}
@@ -108,15 +133,21 @@ export default function Navbar() {
             className="overflow-hidden border-b border-paper/10 bg-ink-deep md:hidden"
           >
             <div className="flex flex-col gap-1 px-6 py-4 text-base text-paper/85 sm:px-10">
-              {navLinks.map((link) => (
-                <Link
+              {navLinks.map((link, index) => (
+                <motion.div
                   key={link.label}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-lg px-2 py-2.5 transition-colors duration-300 hover:bg-paper/5 hover:text-paper"
+                  initial={reduceMotion ? false : { opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: reduceMotion ? 0.01 : 0.3, delay: reduceMotion ? 0 : index * 0.05, ease: EASE }}
                 >
-                  {link.label}
-                </Link>
+                  <Link
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className="block rounded-lg px-2 py-2.5 transition-colors duration-300 hover:bg-paper/5 hover:text-paper"
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
               ))}
             </div>
           </motion.div>

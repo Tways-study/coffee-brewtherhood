@@ -4,6 +4,9 @@ import { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
+import CoffeeRing from "@/app/components/decor/CoffeeRing";
+import SteamWisp from "@/app/components/decor/SteamWisp";
+import Magnetic from "@/components/ui/magnetic";
 import heroImage from "@/app/assets/images/hero-bg.jpg";
 import logo from "@/app/assets/images/logo.jpg";
 import { business } from "@/app/lib/content";
@@ -49,6 +52,7 @@ export default function Hero() {
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-ink-deep via-ink-deep/70 to-ink-deep/10" />
       <div className="absolute inset-0 bg-gradient-to-r from-ink-deep/90 via-ink-deep/40 to-transparent" />
+      <CoffeeRing className="absolute right-[6%] top-[10%] h-[380px] w-[380px] text-paper/[0.22]" />
 
       <motion.div
         variants={container}
@@ -56,8 +60,11 @@ export default function Hero() {
         animate="show"
         className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-16 pt-32 sm:px-10 sm:pb-24"
       >
-        <motion.div variants={item} className="mb-6 h-16 w-16 overflow-hidden rounded-full ring-2 ring-paper/20 sm:h-20 sm:w-20">
-          <Image src={logo} alt="Coffee Brewtherhood logo" width={80} height={80} priority className="h-full w-full object-cover" />
+        <motion.div variants={item} className="relative mb-6 h-16 w-16 sm:h-20 sm:w-20">
+          <SteamWisp className="absolute -top-12 left-1/2 h-16 w-10 -translate-x-1/2 text-paper/40" />
+          <div className="h-full w-full overflow-hidden rounded-full ring-2 ring-paper/20">
+            <Image src={logo} alt="Coffee Brewtherhood logo" width={80} height={80} priority className="h-full w-full object-cover" />
+          </div>
         </motion.div>
 
         <motion.h1
@@ -80,18 +87,20 @@ export default function Hero() {
         </motion.div>
 
         <motion.div variants={item} className="mt-9 flex flex-wrap gap-4">
-          <a
-            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.address)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full bg-accent px-7 py-3.5 font-medium text-accent-ink transition-transform duration-300 ease-out hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
-          >
-            Get directions
-            <span className="sr-only"> (opens in a new tab)</span>
-          </a>
+          <Magnetic className="inline-block">
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.address)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-full bg-accent px-7 py-3.5 font-medium text-accent-ink transition-transform duration-300 ease-out hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+            >
+              Get directions
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          </Magnetic>
           <a
             href={`tel:${business.phone.replace(/\s/g, "")}`}
-            className="rounded-full border border-paper/30 px-7 py-3.5 font-medium text-paper transition-colors duration-300 hover:bg-paper/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+            className="rounded-full border border-paper/30 px-7 py-3.5 font-medium text-paper transition-all duration-300 ease-out hover:scale-[1.02] hover:bg-paper/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
           >
             Call {business.phone}
           </a>
