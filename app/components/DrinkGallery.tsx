@@ -55,21 +55,21 @@ export default function DrinkGallery() {
             <motion.div
               key={drink.name}
               variants={{
-                hidden: { opacity: 0, y: reduceMotion ? 0 : 18 },
+                hidden: { y: reduceMotion ? 0 : 18 },
                 show: {
-                  opacity: 1,
                   y: 0,
                   transition: { duration: reduceMotion ? 0.01 : 0.6, ease: [0.16, 1, 0.3, 1] },
                 },
               }}
-              className={`group relative min-h-[160px] overflow-hidden rounded-2xl ${sizeClasses[drink.size]}`}
+              whileHover={{ y: -4 }}
+              className={`group relative min-h-[160px] overflow-hidden rounded-2xl shadow-[0_0_0_rgba(0,0,0,0)] transition-shadow duration-300 ease-out hover:shadow-[0_24px_50px_-18px_rgba(5,8,22,0.7)] ${sizeClasses[drink.size]}`}
             >
               <Image
                 src={images[drink.image]}
                 alt={`${drink.name} served at Coffee Brewtherhood`}
                 fill
                 sizes="(min-width: 640px) 25vw, 50vw"
-                className={`object-cover transition-transform duration-500 ease-out group-hover:scale-105 ${drink.imagePosition ?? ""}`}
+                className={`object-cover transition-transform duration-500 ease-out group-hover:scale-110 ${drink.imagePosition ?? ""}`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink-deep/85 via-ink-deep/10 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-4">

@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
-import { motion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 import heroImage from "@/app/assets/images/hero-bg.jpg";
 import logo from "@/app/assets/images/logo.jpg";
@@ -11,6 +12,9 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function Hero() {
   const reduceMotion = useSafeReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const imageY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 140]);
 
   const container = {
     hidden: {},
@@ -32,15 +36,17 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-ink-deep">
-      <Image
-        src={heroImage}
-        alt="A heart latte-art cup in a red saucer, lit by strong diagonal sunlight on a wooden table at Coffee Brewtherhood"
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-[55%_45%]"
-      />
+    <section ref={sectionRef} className="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-ink-deep">
+      <motion.div style={{ y: imageY }} className="absolute inset-0 -top-16 scale-110">
+        <Image
+          src={heroImage}
+          alt="A heart latte-art cup in a red saucer, lit by strong diagonal sunlight on a wooden table at Coffee Brewtherhood"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[55%_45%]"
+        />
+      </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-ink-deep via-ink-deep/70 to-ink-deep/10" />
       <div className="absolute inset-0 bg-gradient-to-r from-ink-deep/90 via-ink-deep/40 to-transparent" />
 
@@ -93,7 +99,7 @@ export default function Hero() {
             href="#menu"
             className="rounded-full px-7 py-3.5 font-medium text-paper/80 underline-offset-4 transition-colors duration-300 hover:text-paper hover:underline"
           >
-            View the menu
+            See what people order
           </a>
         </motion.div>
       </motion.div>

@@ -16,7 +16,6 @@ const highlights: Record<string, string> = {
 const testimonials: Testimonial[] = reviews.map((review) => ({
   text: review.quote,
   highlight: highlights[review.name],
-  image: "/avatar-placeholder.svg",
   name: review.name,
   role: review.meta,
 }));
@@ -26,7 +25,13 @@ export default function Reviews() {
 
   return (
     <section id="reviews" className="scroll-mt-24 bg-ink">
-      <div className="mx-auto max-w-6xl px-6 py-20 sm:px-10 sm:py-28">
+      <motion.div
+        initial={{ y: reduceMotion ? 0 : 18 }}
+        whileInView={{ y: 0 }}
+        viewport={{ once: true, margin: "-15%" }}
+        transition={{ duration: reduceMotion ? 0.01 : 0.6, ease: EASE }}
+        className="mx-auto max-w-6xl px-6 py-20 sm:px-10 sm:py-28"
+      >
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-semibold tracking-[-0.02em] text-paper">
@@ -43,18 +48,18 @@ export default function Reviews() {
             {reviewTags.map((tag) => (
               <span
                 key={tag.label}
-                className="rounded-full border border-paper/15 px-3.5 py-1.5 text-sm text-paper/80"
+                className="rounded-full border border-paper/15 px-3.5 py-1.5 text-sm text-paper/80 transition-colors duration-300 hover:border-accent/40 hover:text-paper"
               >
                 {tag.label} <span className="text-muted">· {tag.count}</span>
               </span>
             ))}
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, y: reduceMotion ? 0 : 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ y: reduceMotion ? 0 : 18 }}
+        whileInView={{ y: 0 }}
         viewport={{ once: true, margin: "-10%" }}
         transition={{ duration: reduceMotion ? 0.01 : 0.6, ease: EASE }}
         className="mt-12 pb-20 sm:pb-28"

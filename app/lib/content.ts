@@ -70,13 +70,13 @@ export const menuHighlights = [
   },
   {
     name: "Liwanag (Yellow Mansi)",
-    note: "Mansi, orange juice & syrup over ice · ₱130",
+    note: "Mansi, orange juice & syrup over ice",
     image: "yellow-mansi",
     size: "small",
   },
   {
     name: "Alab (Red Mansi)",
-    note: "Mansi, strawberry puree & pink syrup · ₱130",
+    note: "Mansi, strawberry puree & pink syrup",
     image: "red-mansi",
     size: "small",
   },

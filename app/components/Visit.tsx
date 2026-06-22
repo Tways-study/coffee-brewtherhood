@@ -10,14 +10,15 @@ export default function Visit() {
   const reduceMotion = useSafeReducedMotion();
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.address)}`;
   const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(business.address)}&output=embed`;
+  const facts = [...business.serviceOptions, ...business.badges];
 
   return (
     <section id="visit" className="scroll-mt-24 bg-ink-deep">
       <div className="mx-auto max-w-6xl px-6 py-24 sm:px-10 sm:py-32">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
           <motion.div
-            initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ y: reduceMotion ? 0 : 16 }}
+            whileInView={{ y: 0 }}
             viewport={{ once: true, margin: "-15%" }}
             transition={{ duration: reduceMotion ? 0.01 : 0.7, ease: EASE }}
           >
@@ -26,6 +27,18 @@ export default function Visit() {
             </h2>
             <p className="mt-4 max-w-md text-lg text-muted">{business.address}</p>
             <p className="mt-2 text-sm text-muted/70">Plus code: {business.plusCode}</p>
+
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              {facts.map((fact) => (
+                <span
+                  key={fact}
+                  className="rounded-full border border-paper/15 px-3.5 py-1.5 text-sm text-paper/80"
+                >
+                  {fact}
+                </span>
+              ))}
+              <span className="text-sm font-medium text-paper">{business.hours}</span>
+            </div>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <a
@@ -49,11 +62,11 @@ export default function Visit() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.97 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ scale: reduceMotion ? 1 : 0.97 }}
+            whileInView={{ scale: 1 }}
             viewport={{ once: true, margin: "-15%" }}
             transition={{ duration: reduceMotion ? 0.01 : 0.8, ease: EASE }}
-            className="group relative aspect-[4/3] overflow-hidden rounded-3xl border border-paper/12 shadow-lg"
+            className="group relative aspect-[4/3] overflow-hidden rounded-3xl border border-paper/12 shadow-[0_30px_70px_-25px_rgba(5,8,22,0.7)]"
           >
             <iframe
               src={mapEmbedUrl}

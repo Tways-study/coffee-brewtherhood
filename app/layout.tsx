@@ -36,6 +36,10 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <div
+          aria-hidden="true"
+          className="grain-overlay pointer-events-none fixed inset-0 z-[var(--z-grain)] opacity-[0.05] mix-blend-overlay"
+        />
         <Navbar />
         {children}
       </body>

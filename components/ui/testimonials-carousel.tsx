@@ -7,7 +7,6 @@ import { useSafeReducedMotion } from "@/lib/use-safe-reduced-motion";
 export interface Testimonial {
   text: string;
   highlight?: string;
-  image: string;
   name: string;
   role: string;
 }
@@ -39,27 +38,35 @@ export const TestimonialsCarousel: React.FC<TestimonialsCarouselProps> = ({
 
   // Reduced motion: show the list once, statically, instead of an infinite scroll loop.
   const items = reduceMotion ? testimonials : [...testimonials, ...testimonials];
+  const distance = direction === "left" ? -carouselWidth : carouselWidth;
 
   return (
     <div className={`overflow-hidden w-full ${className}`} ref={containerRef}>
-      <motion.div
-        animate={
+      <div
+        className={reduceMotion ? "flex flex-wrap gap-6" : "carousel-track flex gap-6"}
+        style={
           reduceMotion
-            ? { x: 0 }
-            : { x: direction === "left" ? [0, -carouselWidth] : [-carouselWidth, 0] }
+            ? undefined
+            : ({
+                "--carousel-distance": `${distance}px`,
+                "--carousel-duration": `${speed}s`,
+              } as React.CSSProperties)
         }
-        transition={
-          reduceMotion
-            ? { duration: 0 }
-            : { duration: speed, repeat: Infinity, ease: "linear" }
-        }
-        className={reduceMotion ? "flex flex-wrap gap-6" : "flex gap-6"}
+        tabIndex={reduceMotion ? undefined : 0}
+        role={reduceMotion ? undefined : "group"}
+        aria-label={reduceMotion ? undefined : "Reviews, scrolling automatically. Hover or focus to pause."}
       >
-        {items.map(({ text, highlight, image, name, role }, index) => (
+        {items.map(({ text, highlight, name, role }, index) => (
           <motion.div
             key={index}
             whileHover={{ scale: 1.05, rotate: 1 }}
-            className="my-3 flex flex-shrink-0 flex-col justify-between overflow-hidden rounded-3xl border border-paper/12 bg-surface p-5 shadow-lg w-[320px]"
+            onMouseMove={(event) => {
+              const target = event.currentTarget;
+              const rect = target.getBoundingClientRect();
+              target.style.setProperty("--spot-x", `${event.clientX - rect.left}px`);
+              target.style.setProperty("--spot-y", `${event.clientY - rect.top}px`);
+            }}
+            className="spotlight-card my-3 flex flex-shrink-0 flex-col justify-between overflow-hidden rounded-3xl border border-paper/12 bg-surface p-5 shadow-[0_24px_60px_-20px_rgba(5,8,22,0.7)] w-[320px]"
             style={{ height: cardHeight }}
           >
             <p className="text-sm leading-relaxed text-paper/90 text-justify break-words whitespace-normal">
@@ -77,22 +84,13 @@ export const TestimonialsCarousel: React.FC<TestimonialsCarouselProps> = ({
                 : text}
             </p>
 
-            <div className="flex items-center gap-3 mt-4 shrink-0">
-              <img
-                src={image}
-                alt={name}
-                width={50}
-                height={50}
-                className="h-12 w-12 rounded-full object-cover"
-              />
-              <div className="flex flex-col">
-                <div className="font-medium leading-tight text-paper">{name}</div>
-                <div className="text-sm text-muted">{role}</div>
-              </div>
+            <div className="mt-4 shrink-0">
+              <div className="font-medium leading-tight text-paper">{name}</div>
+              <div className="text-sm text-muted">{role}</div>
             </div>
           </motion.div>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 };

@@ -13,8 +13,8 @@ export default function Story() {
     <section className="bg-ink">
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-10 sm:py-28 lg:grid-cols-[1.1fr_1fr] lg:items-center">
         <motion.div
-          initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ y: reduceMotion ? 0 : 16 }}
+          whileInView={{ y: 0 }}
           viewport={{ once: true, margin: "-15%" }}
           transition={{ duration: reduceMotion ? 0.01 : 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
@@ -31,11 +31,11 @@ export default function Story() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.97 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ scale: reduceMotion ? 1 : 0.97 }}
+          whileInView={{ scale: 1 }}
           viewport={{ once: true, margin: "-15%" }}
           transition={{ duration: reduceMotion ? 0.01 : 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="group relative aspect-[4/5] overflow-hidden rounded-3xl"
+          className="group relative aspect-[4/5] overflow-hidden rounded-3xl shadow-[0_30px_70px_-25px_rgba(5,8,22,0.7)]"
         >
           <Image
             src={stillnessImage}
