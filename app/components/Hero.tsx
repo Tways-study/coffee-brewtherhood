@@ -19,6 +19,8 @@ export default function Hero() {
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
   const imageY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 140]);
 
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.address)}`;
+
   const container = {
     hidden: {},
     show: {
@@ -39,7 +41,11 @@ export default function Hero() {
   };
 
   return (
-    <section ref={sectionRef} className="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-ink-deep">
+    <section
+      ref={sectionRef}
+      className="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-ink-deep"
+    >
+      {/* Parallax hero image */}
       <motion.div style={{ y: imageY }} className="absolute inset-0 -top-16 scale-110">
         <Image
           src={heroImage}
@@ -50,49 +56,62 @@ export default function Hero() {
           className="object-cover object-[55%_45%]"
         />
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-t from-ink-deep via-ink-deep/70 to-ink-deep/10" />
-      <div className="absolute inset-0 bg-gradient-to-r from-ink-deep/90 via-ink-deep/40 to-transparent" />
-      <CoffeeRing className="absolute right-[6%] top-[10%] h-[380px] w-[380px] text-paper/[0.22]" />
+
+      {/* Gradient overlay — bottom-heavy so the photo reads above the fold */}
+      <div className="absolute inset-0 bg-gradient-to-t from-ink-deep via-ink-deep/70 to-ink-deep/5" />
+      <div className="absolute inset-0 bg-gradient-to-r from-ink-deep/80 via-ink-deep/25 to-transparent" />
+
+      <CoffeeRing className="absolute right-[6%] top-[12%] h-[320px] w-[320px] text-paper/[0.17]" />
 
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-16 pt-32 sm:px-10 sm:pb-24"
+        className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-14 pt-32 sm:px-10 sm:pb-20"
       >
-        <motion.div variants={item} className="relative mb-6 h-16 w-16 sm:h-20 sm:w-20">
-          <SteamWisp className="absolute -top-12 left-1/2 h-16 w-10 -translate-x-1/2 text-paper/40" />
-          <div className="h-full w-full overflow-hidden rounded-full ring-2 ring-paper/20">
-            <Image src={logo} alt="Coffee Brewtherhood logo" width={80} height={80} priority className="h-full w-full object-cover" />
+        {/* Logo mark */}
+        <motion.div variants={item} className="relative mb-7 h-14 w-14 sm:h-16 sm:w-16">
+          <SteamWisp className="absolute -top-10 left-1/2 h-13 w-9 -translate-x-1/2 text-paper/35" />
+          <div className="h-full w-full overflow-hidden rounded-full ring-1 ring-paper/20">
+            <Image
+              src={logo}
+              alt="Coffee Brewtherhood logo"
+              width={64}
+              height={64}
+              priority
+              className="h-full w-full object-cover"
+            />
           </div>
         </motion.div>
 
+        {/* Main headline */}
         <motion.h1
           variants={item}
-          className="max-w-2xl font-display text-[clamp(2.75rem,8vw,5.5rem)] font-semibold leading-[0.98] tracking-[-0.03em] text-paper"
+          className="max-w-2xl font-display text-[clamp(2.75rem,8vw,5.5rem)] font-semibold leading-[0.95] tracking-[-0.035em] text-paper"
         >
           Coffee Brewtherhood
         </motion.h1>
 
-        <motion.p variants={item} className="mt-5 max-w-md text-lg text-paper/80 sm:text-xl">
-          Independent specialty {business.category.toLowerCase()} in the heart of Jaro, Iloilo City.
+        {/* Location line */}
+        <motion.p variants={item} className="mt-4 text-base text-paper/65 sm:text-lg">
+          Independent specialty cafe · Jaro, Iloilo City
         </motion.p>
 
-        <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-5">
-          <div className="flex items-center gap-2 rounded-full bg-paper/10 px-4 py-2 backdrop-blur-sm">
-            <span className="font-display text-lg font-semibold text-paper">{business.rating}</span>
-            <span aria-hidden className="text-accent">★★★★★</span>
-            <span className="text-sm text-muted">({business.reviewCount} reviews)</span>
-          </div>
+        {/* Rating — inline, no badge */}
+        <motion.div variants={item} className="mt-5 flex items-center gap-2.5">
+          <span aria-hidden className="text-accent text-sm">★★★★★</span>
+          <span className="font-display text-base font-semibold text-paper">{business.rating}</span>
+          <span className="text-sm text-muted">· {business.reviewCount} Google reviews</span>
         </motion.div>
 
-        <motion.div variants={item} className="mt-9 flex flex-wrap gap-4">
+        {/* CTAs */}
+        <motion.div variants={item} className="mt-8 flex flex-wrap gap-3">
           <Magnetic className="inline-block">
             <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.address)}`}
+              href={mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="block rounded-full bg-accent px-7 py-3.5 font-medium text-accent-ink transition-transform duration-300 ease-out hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+              className="block rounded-full bg-accent px-6 py-3.5 font-medium text-accent-ink transition-transform duration-300 ease-out hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
             >
               Get directions
               <span className="sr-only"> (opens in a new tab)</span>
@@ -100,16 +119,30 @@ export default function Hero() {
           </Magnetic>
           <a
             href={`tel:${business.phone.replace(/\s/g, "")}`}
-            className="rounded-full border border-paper/30 px-7 py-3.5 font-medium text-paper transition-all duration-300 ease-out hover:scale-[1.02] hover:bg-paper/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+            className="rounded-full border border-paper/25 px-6 py-3.5 font-medium text-paper/90 transition-all duration-300 ease-out hover:border-paper/40 hover:bg-paper/8 hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
           >
-            Call {business.phone}
+            {business.phone}
           </a>
-          <a
-            href="#menu"
-            className="rounded-full px-7 py-3.5 font-medium text-paper/80 underline-offset-4 transition-colors duration-300 hover:text-paper hover:underline"
-          >
-            See what people order
-          </a>
+        </motion.div>
+
+        {/* Info strip — hours, services, badges in one quiet line */}
+        <motion.div
+          variants={item}
+          className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-paper/10 pt-5 text-sm text-paper/50"
+        >
+          <span className="text-paper/70">{business.hours}</span>
+          {business.serviceOptions.map((opt, i) => (
+            <span key={opt} className="flex items-center gap-1.5">
+              {i === 0 && <span aria-hidden className="text-paper/25">·</span>}
+              {opt}
+              {i < business.serviceOptions.length - 1 && (
+                <span aria-hidden className="text-paper/25">·</span>
+              )}
+            </span>
+          ))}
+          {business.badges.map((badge) => (
+            <span key={badge}>{badge}</span>
+          ))}
         </motion.div>
       </motion.div>
     </section>

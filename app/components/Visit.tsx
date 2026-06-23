@@ -12,37 +12,59 @@ export default function Visit() {
   const reduceMotion = useSafeReducedMotion();
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.address)}`;
   const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(business.address)}&output=embed`;
-  const facts = [...business.serviceOptions, ...business.badges];
 
   return (
     <section id="visit" className="relative isolate scroll-mt-24 overflow-hidden bg-ink-deep">
-      <CoffeeRing className="absolute bottom-6 left-4 -z-10 h-64 w-64 text-paper/[0.24]" />
+      <CoffeeRing className="absolute bottom-8 left-4 -z-10 h-56 w-56 text-paper/[0.2]" />
+
       <div className="mx-auto max-w-6xl px-6 py-24 sm:px-10 sm:py-32">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center">
+
+          {/* Info column */}
           <motion.div
-            initial={{ y: reduceMotion ? 0 : 16 }}
-            whileInView={{ y: 0 }}
+            initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-15%" }}
             transition={{ duration: reduceMotion ? 0.01 : 0.7, ease: EASE }}
           >
-            <h2 className="font-display text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-paper">
-              Come find us in Jaro
+            <h2 className="font-display text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.0] tracking-[-0.035em] text-paper">
+              Come find us<br />
+              <span className="text-paper/50">in Jaro</span>
             </h2>
-            <p className="mt-4 max-w-md text-lg text-muted">{business.address}</p>
-            <p className="mt-2 text-sm text-muted/70">Plus code: {business.plusCode}</p>
 
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              {facts.map((fact) => (
-                <span
-                  key={fact}
-                  className="rounded-full border border-paper/15 px-3.5 py-1.5 text-sm text-paper/80 transition-colors duration-300 hover:border-accent/40 hover:text-paper"
-                >
-                  {fact}
-                </span>
-              ))}
-              <span className="text-sm font-medium text-paper">{business.hours}</span>
+            {/* Hours — the most important piece of info */}
+            <div className="mt-8 pb-6 border-b border-paper/10">
+              <p className="text-xs text-muted/60 mb-2 tracking-[0.08em]">Hours</p>
+              <p className="font-display text-[clamp(1.5rem,3.5vw,2.25rem)] font-semibold tracking-[-0.02em] text-paper leading-none">
+                {business.hours}
+              </p>
             </div>
 
+            {/* Address */}
+            <div className="mt-6 space-y-0.5 text-muted text-base leading-relaxed">
+              <p>Golden AC Business Center</p>
+              <p>E Lopez St, Jaro</p>
+              <p>Iloilo City 5000</p>
+            </div>
+            <p className="mt-1 text-xs text-muted/50">Plus code: {business.plusCode}</p>
+
+            {/* Services */}
+            <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-paper/70">
+              {business.serviceOptions.map((opt) => (
+                <span key={opt} className="flex items-center gap-1.5">
+                  <span className="text-accent font-bold" aria-hidden>✓</span>
+                  {opt}
+                </span>
+              ))}
+              {business.badges.map((badge) => (
+                <span key={badge} className="flex items-center gap-1.5">
+                  <span aria-hidden>🏳️‍🌈</span>
+                  {badge}
+                </span>
+              ))}
+            </div>
+
+            {/* CTAs */}
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Magnetic className="inline-block">
                 <a
@@ -57,25 +79,28 @@ export default function Visit() {
               </Magnetic>
               <a
                 href={`tel:${business.phone.replace(/\s/g, "")}`}
-                className="rounded-full border border-paper/30 px-7 py-3.5 text-center font-medium text-paper transition-all duration-300 ease-out hover:scale-[1.02] hover:bg-paper/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+                className="rounded-full border border-paper/25 px-7 py-3.5 text-center font-medium text-paper/90 transition-all duration-300 ease-out hover:border-paper/40 hover:bg-paper/8 hover:text-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
               >
                 {business.phone}
               </a>
             </div>
 
-            <p className="mt-10 border-t border-paper/10 pt-6 text-sm text-muted">{business.deliveryNote}</p>
+            <p className="mt-8 text-sm text-muted/60 leading-relaxed max-w-[44ch]">
+              {business.deliveryNote}
+            </p>
           </motion.div>
 
+          {/* Map */}
           <motion.div
-            initial={{ scale: reduceMotion ? 1 : 0.97 }}
-            whileInView={{ scale: 1 }}
+            initial={{ opacity: reduceMotion ? 1 : 0, scale: reduceMotion ? 1 : 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-15%" }}
             transition={{ duration: reduceMotion ? 0.01 : 0.8, ease: EASE }}
-            className="group relative aspect-[4/3] overflow-hidden rounded-3xl border border-paper/12 shadow-[0_30px_70px_-25px_rgba(5,8,22,0.7)]"
+            className="group relative aspect-[4/3] overflow-hidden rounded-3xl border border-paper/12 shadow-[0_30px_70px_-25px_rgba(5,8,22,0.75)]"
           >
             <iframe
               src={mapEmbedUrl}
-              className="h-full w-full grayscale-[15%] transition-[filter] duration-500 group-hover:grayscale-0"
+              className="h-full w-full grayscale-[20%] transition-[filter] duration-500 group-hover:grayscale-0"
               style={{ border: 0 }}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
